@@ -5169,13 +5169,6 @@ footer .footer-header .footer-header__redes {
             justify-content: flex-start;
   }
 }
-.svg-input {
-  background-image: url("/public/css/icons8-search.svg");
-  background-repeat: no-repeat;
-  background-size: 20px 20px; /* ajusta el tamaño del svg */
-  padding-left: 25px; /* ajusta la posición del texto */
-}
-
 
 footer .footer-header .footer-header__redes a {
   display: -webkit-inline-box;
