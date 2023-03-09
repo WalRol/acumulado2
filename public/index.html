@@ -1,43 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <title>Acumulado</title>
+    <link rel="stylesheet" href="css/site.css">
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <div id="wrap"></div>
+    <script>
+    //==================
+    //ACTIVE MENU
+    //==================
+    let $menu = document.querySelector('.header');
+    let $hamburger = document.querySelector('.com-hamburger');
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    //le agregamos o le quitamos la clase dependiendo si la tiene o no
+    let handleMenu = () => {
+        $menu.classList.toggle("--active-menu");
+    }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    //le asiganmos la func al click del menu
+    $hamburger.addEventListener('click', handleMenu)
+
+    //Hacemos que el menu se cierre cuando clickeamos esc.
+    window.addEventListener('keydown', function(e) {
+        //preg si la tecla es esc cuando tecleamos
+        if ((e.key == 'Escape' || e.key == 'Esc' || e.keyCode == 27)) {
+            e.preventDefault();
+            //recorremos todos los active y lo capturamos
+            let $isActive = document.querySelector('.--active-menu');
+
+            //si es true lo volamos y se cierra el menu
+            if ($isActive) {
+                $isActive.classList.remove("--active-menu");
+            }
+            return false;
+        }
+    });
+</script>
+<script>
+    //==================
+    //ACTIVE SEARCH
+    //==================
+    let $input = document.querySelector('.com-search__input');
+    let $header = document.querySelector('.header');
+    let $headerMobile = document.querySelector('.com-nav-mobile');
+
+    //agregamos la clase al evento focus
+    $input.addEventListener("focus", function() {
+        $header.classList.add('--active-search');
+    });
+
+    //removemos la clase cuando nos salimos del input
+    $input.addEventListener("blur", function() {
+        $header.classList.remove('--active-search');
+    });
+</script>
+<script>
+    //Iniciamos la posicion del scroll
+    let scrollPos = 0;
+
+    let $share = document.querySelector('.com-share');
+
+    //funcion en la cual detectamos el scrollDown scrollUp y
+    // le asig su respectiva clase a un elemento que pasamos como parametro (elemento) y el valor actual de "Y" de window (windowY)
+    let scrollAnimation = (elemento, windowY) => {
+        //Validamos que exista el elemento y sino arafue. 
+        if (!elemento) {
+            return false
+        }
+
+        //si es menor el punto "Y" scroll al scrollPos definido entramos (scrollUp)
+        //caso contrario estariamos haciendo scrollDOwn, dentro definimos la clase para el estado
+        if (windowY < scrollPos) {
+            // Scroll UP
+            elemento.classList.add('--scrollUp');
+            elemento.classList.remove('--scrollDown');
+        } else {
+            // Scroll DOWN
+            elemento.classList.add('--scrollDown');
+            elemento.classList.remove('--scrollUp');
+        }
+    }
+
+    //agregamos una function scroll y dnetro de ella colocar todas las animaciones que funcionen con scroll
+    window.addEventListener('scroll', () => {
+        //asignamos el valor del punto "Y" en cada scroll
+        let windowY = window.scrollY;
+
+        //MENU DESKTOP
+        scrollAnimation($header, windowY);
+
+        // MENU MOBILE
+        // se le agrega el cond xq en safari con un determinado mouse el scroll hace un rebote en el explorador que 
+        // genera que entienda que se esta haciendo scrolldown y entonces desaparece
+        if (windowY > 75) {
+            scrollAnimation($headerMobile, windowY);
+        }
+
+        //SHARE
+        if (document.documentElement.clientWidth < 1024) {
+            scrollAnimation($share, windowY);
+            //agregamos el condicional en el cual validamos que no este en top 
+            //para que no se pise con el header
+            if ($share.classList.contains('--scrollUp') && windowY < 100) {
+                $share.style.display = 'none';
+            } else {
+                $share.style.display = 'block';
+            }
+        }
+
+
+
+        //le damos el valor actual del punto "Y" scroll a scrollPos para saber en la sig iteracion
+        //si es mayor o menor y de esta forma sabemos si esta subiendo o bajando. 
+        //ESTE VALOR DEBERIA IR SIEMPRE A LO ULTIMO DEL SCROLL
+        scrollPos = windowY;
+    });
+
+
+    //transparencia para acu grilla, verificamos si existe el helper degrade y creamos el elemento dentro de ese helper y despues, segun el resize medimos el article
+    //y le asignamos a esa caja nueva la misma altura, asi se adapta siempre a las cajas
+
+    if (document.querySelector('.hlp-degrade') !== null) {
+        let transparency = document.createElement("div");
+        transparency.className = 'transparency';
+        document.querySelector('.hlp-degrade').appendChild(transparency);
+    }
+    let alturaTransparency = () => {
+        let article = document.querySelector('.sidebar__main .mod-caja-nota');
+        let alturaArticle = article.offsetHeight;
+        document.querySelector('.transparency').style.height = alturaArticle + "px"
+    }
+    alturaTransparency()
+
+    window.addEventListener('resize', () => {
+        alturaTransparency();
+    })
+</script>
   </body>
 </html>
