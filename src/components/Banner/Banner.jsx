@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getTags } from '../Tags/getTags';
-import getArticles from '../services/getArticles';
+import { getTags } from '../../utils/getTags';
+import getArticles from '../../services/getArticles';
 
 
 
@@ -61,7 +61,7 @@ export default function Banner() {
               </section>
               <div className="mod-caja-nota__descrip">
                 <h2 className="com-title-acu"><a href={`https://www.lanacion.com.ar${article.website_url}`}>{article.headlines.basic}</a></h2>
-                <h4 className="com-date">{new Date(article.display_date).toLocaleDateString("es-AR", { year: 'numeric', month: 'long', day: 'numeric' })}</h4>
+                <h4 className="com-date">{new Date(article.display_date).toLocaleDateString("es-AR", { year: 'numeric', month: 'long', day: 'numeric' }).replace(/^([a-z])|\s+([a-z])/g, function ($1) { return $1.toUpperCase(); })}</h4>
                 
               </div>
             </article>

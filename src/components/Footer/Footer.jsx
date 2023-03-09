@@ -6,9 +6,7 @@ export default function Footer() {
       <div className="lay" >
         <section className="row footer-header">
           <section className="col-desksm-4 col-desk-6 footer-header__logo">
-            <a href="https://www.lanacion.com.ar/" className="">
-              <i className="logo-la-nacion"></i>
-            </a>
+            
           </section>
           <section className="col-12 col-desksm-4 col-desk-3 footer-header__redes">
     
