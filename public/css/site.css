@@ -5654,6 +5654,7 @@ input[type=text]:focus::placeholder {
   z-index: 100;
   background: transparent;
   width: 191px;
+  height: auto;
 }
 
 .com-search__submit {
@@ -6741,5 +6742,26 @@ article a.figure:before {
 .rolling.fondo-revista,
 .rolling .mod-newsletter {
   background-color: #b40d15;
+}
+
+.input-container {
+  position: relative;
+  width: fit-content;
+}
+
+input {
+  height: 1.5rem;
+  border-radius: .5rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  right: .5rem;
+  top: .4rem;
+  cursor: pointer;
 }
 /*# sourceMappingURL=site.css.map */
