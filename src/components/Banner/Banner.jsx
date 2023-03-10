@@ -42,7 +42,7 @@ export default function Banner() {
             
                <div id="" className="cont_tags com-secondary-tag hlp-marginBottom-20">
                {tags.map((tag) => (
-               <a href={`${tag.slug}`} className="">{tag.text}</a>
+               <a href={`https://www.lanacion.com.ar/tema/${tag.slug}`} className="">{tag.text}</a>
                ))}
              </div>
             
